@@ -100,6 +100,13 @@ public class MediaFileDao extends AbstractDao {
                      artist, album, MUSIC.name(), AUDIOBOOK.name(), PODCAST.name());
     }
 
+    public List<MediaFile> searchSongsByName(String searchString) {
+      String modifiedSearchString = "%" + searchString + "%";
+      return query("select " + QUERY_COLUMNS + " from media_file where title like ? and present " +
+                   "and type = ? order by title", rowMapper,
+                   modifiedSearchString, MUSIC.name());
+    }
+
     public List<MediaFile> getVideos(final int count, final int offset, final List<MusicFolder> musicFolders) {
         if (musicFolders.isEmpty()) {
             return Collections.emptyList();
